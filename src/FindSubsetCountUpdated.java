@@ -33,9 +33,14 @@ public class FindSubsetCountUpdated {
                 psum[i][j] = points[i - 1][j - 1] - psum[i - 1][j] - psum[i][j - 1] + psum[i - 1][j - 1];
             }
         }
-        int sum = 1;
-        for (int x1 = 0; x1 < N; x1++)
-            sum += go(x1, ss[x1], x1, ss[x1]);
+        int sum = 1 + N;
+        for (int pr = 0; pr < N-1; pr++) {
+            for (int qr = pr + 1; qr < N; qr++) {
+                int pc = Math.min(ss[pr], ss[qr]);
+                int qc = Math.max(qs[pr], qs[qr]);
+            }
+        }
+
         return sum;
     }
 
