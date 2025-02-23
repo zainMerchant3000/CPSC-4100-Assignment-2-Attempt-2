@@ -11,12 +11,23 @@ public class FindSubsetCountUpdated {
 
 
     static long getsum(int x1, int y1, int x2, int y2) {
+        System.out.println("Printing arguments in getSum below: ");
+        System.out.println("x1: " + x1 + " y1: " + y1 + " x2: " + x2 + " y2: " + y2);
         // Make sure to stay within bounds when accessing the psum array
+        /*
         if (x1 < 0 || y1 < 0 || x2 >= N || y2 >= N) {
             throw new IllegalArgumentException("Indices are out of bounds for the psum array.");
         }
-
-        return psum[x2 + 1][y2 + 1] - psum[x2 + 1][y1] - psum[x1][y2 + 1] + psum[x1][y1];
+        */
+        long a = psum[x2 + 1][y2 + 1];
+        System.out.println("a: " + a);
+        long b = psum[x2 + 1][y1];
+        System.out.println("b: " + b);
+        long c = psum[x1][y1];
+        System.out.println("c: " + c);
+        long d = psum[x1][y2 + 1];
+        System.out.println("d: " + d);
+        return a - b + c - d;
     }
 
     static long solve(int[][] markedMatrix) {
@@ -43,20 +54,20 @@ public class FindSubsetCountUpdated {
 
         for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= N; j++) {
-               // System.out.print(psum[i][j] + " ");
+                //System.out.print(psum[i][j] + " ");
             }
-           // System.out.println();
+            //System.out.println();
         }
         for (int i = 0; i < N; i++) {
-          //  System.out.print("ss[i]: " + ss[i] + " ");
+            System.out.print("ss[i]: " + ss[i] + " ");
 
         }
-      //  System.out.println();
+        System.out.println();
 
         for (int i = 0; i < N; i++) {
-          //  System.out.print("qs[i]: " + qs[i] + " ");
+           System.out.print("qs[i]: " + qs[i] + " ");
         }
-       // System.out.println();
+        System.out.println();
 
 
 
@@ -72,10 +83,26 @@ public class FindSubsetCountUpdated {
             for (int qr = pr + 1; qr < N; qr++) {
                 // Finding min column index between 2 points
                 int pc = Math.min(ss[pr], ss[qr]);
-              //  System.out.println("min: for  " + pc);
+                System.out.println("ss[pr]: " + ss[pr]);
+                System.out.println("ss[qr]: " + ss[qr]);
+                System.out.println("min (pc):   " + pc);
                 // Finding max column index between the 2 points
                 int qc = Math.max(qs[pr], qs[qr]);
-              //  System.out.println("max: " + qc);
+                System.out.println("qs[pr]: " + qs[pr]);
+                System.out.println("qs[qr]: " + qs[qr]);
+                System.out.println("max (qc): " + qc);
+                for (int j = 0; j < N; j++) {
+                    System.out.print("ss[i]: " + ss[j] + " ");
+
+                }
+                System.out.println();
+
+                for (int j = 0; j < N; j++) {
+                    System.out.print("qs[i]: " + qs[j] + " ");
+
+                }
+                System.out.println();
+
 
                 // Calculate the product of the regions using the getSum function
                 sum += handlePair(pr,pc,qr,qc);
@@ -101,12 +128,16 @@ public class FindSubsetCountUpdated {
     }
 
     private static long handlePair(int pr, int pc, int qr, int qc) {
-        if (pc < 0 || qc < 0 || pr < 0 || qr < 0 || pc >= N || qc >= N || pr >= N || qr >= N) {
-            throw new IllegalArgumentException("Invalid coordinates in handlePair");
+        if (qc < pc) {
+            return handlePair(pr, pc, qr, qc );
         }
-        // base case:
-        // recursive case:
+        System.out.println("Printing arguments in handlePair: ");
+        System.out.println("pr: " + pr + " pc: " + pc + " qr: " + qr + " qc: " + qc);
+        
+
+
         long up = getsum(0, pc, pr, qc);  // Calculate the 'up' region product
+        System.out.println("up: " + up);
         long down = getsum(qr, pc, N - 1, qc);  // Calculate the 'down' region product
         return up * down;  // Return the product of the two regions
     }
@@ -119,17 +150,17 @@ public class FindSubsetCountUpdated {
             // ex) ps[0][0] = 0, ps[1][0] = 2 ... etc)
             qs[i] = ps[i][coord];
 
-           // System.out.println("qs[i]: " + Arrays.toString(qs));
+        System.out.println("qs[i]: " + Arrays.toString(qs));
         // sort the x and y coordinates
         Arrays.sort(qs);
-       // System.out.println(" Sorted qs[i]: " + Arrays.toString(qs));
+        System.out.println(" Sorted qs[i]: " + Arrays.toString(qs));
         // create mapping of coordinates
         // ex) m = {0: 0, 1:1}
         var m = new HashMap<Integer, Integer>();
         for (int i = 0; i < N; i++) {
             // (populate map with sorted x and y coordinates)
             Integer previousValue =  m.put(qs[i], i);
-           // System.out.println("Inserted (" + qs[i] + ", " + i + "), previous value: " + previousValue);
+            System.out.println("Inserted (" + qs[i] + ", " + i + "), previous value: " + previousValue);
         }
         return m;
     }
@@ -141,21 +172,20 @@ public class FindSubsetCountUpdated {
         var xs = compressx(points, 0);
         var ys = compressx(points, 1);
         // Print xs
-        /*
+
         System.out.println("xs:");
         for (Map.Entry<Integer, Integer> entry : xs.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
         }
-        */
+
 
 
         // Print ys
-        /*
         System.out.println("ys:");
         for (Map.Entry<Integer, Integer> entry : ys.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
         }
-        */
+
 
         for (int i = 0; i < N; i++) {
             // iterate and update each point to compressed x-y values
@@ -168,6 +198,7 @@ public class FindSubsetCountUpdated {
             points[i][0] = xValue;
             points[i][1] = yValue;
         }
+
 
     }
 
@@ -204,6 +235,12 @@ public class FindSubsetCountUpdated {
                 points[i][j] = Integer.parseInt(tokens[k]);
             }
         }
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.print(points[i][j] + " ");
+            }
+            System.out.println();
+        }
 
         // compress the points
         compress(points);
@@ -211,9 +248,9 @@ public class FindSubsetCountUpdated {
         // create the matrix:
         int[][] markedMatrix = createMarkedMatrix(points);
         // Print the marked matrix
-       // System.out.println("marked matrix");
-       // printMatrix(markedMatrix);
-       // System.out.println("prefix sum: ");
+        System.out.println("marked matrix");
+        printMatrix(markedMatrix);
+        System.out.println("prefix sum: ");
         long result = solve(markedMatrix);
         System.out.println("result: " + result);
        // System.out.println(solve(markedMatrix));
